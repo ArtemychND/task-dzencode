@@ -1,8 +1,8 @@
 <template>
-  <div class="orders">
-    <div class="orders__title" v-if="getData.length">
+  <div class="orders" v-if="getData && getData.length">
+    <div class="orders__title">
       <h2>Orders / {{ getData.length }}</h2>
-      <FilterBy :filter="{ specification, type }" />
+      <FilterBy :filter="{ specification, type }" @set-filter="applyFilter"/>
     </div>
     <div class="orders__wrapper">
       <div
@@ -21,7 +21,7 @@
         <div class="close-block">
           <div class="close-btn" @click="closeProducts">&times;</div>
         </div>
-        <ProductItem v-for="prod in products" :key="prod.id" :product="prod" />
+        <ProductItem v-for="prod in filteredProducts" :key="prod.id" :product="prod" />
       </div>
     </div>
   </div>
@@ -45,6 +45,7 @@ export default {
         activeOrder: null,
         squeezeOrders: false,
       },
+      filtered: null
     };
   },
   computed: {
@@ -52,10 +53,14 @@ export default {
 
     products() {
       if (this.active.activeOrder) {
-        return this.getData[this.active.activeOrder - 1].products;
+        return this.getData.find((el => el.id == this.active.activeOrder)).products;
       } else {
         return undefined;
       }
+    },
+
+    filteredProducts() {
+      return this.filtered ? this.products.filter((el) => el.type == this.filtered || el.specification == this.filtered) : this.products
     },
 
     specification() {
@@ -63,7 +68,7 @@ export default {
         this.getData.length &&
         this.getData.reduce((arr, el) => {
           arr.push(...el.products.map((i) => i.specification));
-          return arr;
+          return [...new Set(arr)];
         }, [])
       );
     },
@@ -72,7 +77,7 @@ export default {
         this.getData.length &&
         this.getData.reduce((arr, el) => {
           arr.push(...el.products.map((i) => i.type));
-          return arr;
+          return [...new Set(arr)];
         }, [])
       );
     },
@@ -87,6 +92,9 @@ export default {
     closeProducts() {
       this.active.activeOrder = null;
       this.active.squeezeOrders = false;
+    },
+    applyFilter(value) {
+      this.filtered = value
     }
   },
   async mounted() {

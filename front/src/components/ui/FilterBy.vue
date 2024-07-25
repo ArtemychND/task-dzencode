@@ -2,13 +2,13 @@
   <div class="filter">
     <div class="filter__by">
       <label for="type">Type:</label>
-      <select name="type" id="type">
+      <select name="type" id="type" @change="setFilter">
         <option v-for="(el, i) in filter.type" :key="'type' + i" :value="el">{{el}}</option>
       </select>
     </div>
     <div class="filter__by">
       <label for="specification">Specification:</label>
-      <select name="specification" id="specification">
+      <select name="specification" id="specification" @change="setFilter">
         <option v-for="(el, i) in filter.specification" :key="'specification' + i" :value="el">{{el}}</option>
       </select>
     </div>
@@ -17,12 +17,18 @@
 
 <script>
 export default {
+  emits: ['set-filter'],
   props: {
     filter: {
       type: Object,
       required: true
     }
   },
+  methods: {
+    setFilter(e) {
+      this.$emit('set-filter', e.target.value)
+    }
+  }
 }
 </script>
 

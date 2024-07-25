@@ -4,7 +4,9 @@
     <main>
       <NavigationMenu />
       <div class="content-view">
-        <router-view></router-view>
+        <transition name="fade">
+          <router-view></router-view>
+        </transition>
       </div>
     </main>
       <!-- If I use Vue 3 syntaxis I used <teleport></teleport> and dialog-->
@@ -116,5 +118,16 @@ img {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transform: translateX(50%);
+  opacity: 0;
 }
 </style>

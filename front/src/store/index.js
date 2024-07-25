@@ -17,7 +17,7 @@ export default new Vuex.Store({
       const ws = new WebSocket('ws://localhost:5070');
 
       ws.onopen = () => {
-        ws.send(payload)
+        ws.send(JSON.stringify(payload))
       }
 
       ws.onerror = () => {

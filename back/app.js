@@ -47,9 +47,9 @@ const products = [
     serialNumber: 1234,
     isNew: 1,
     photo: 'pathToFile.jpg',
-    title: 'Product 1',
+    title: 'Product 2',
     type: 'Monitors',
-    specification: 'Specification 1',
+    specification: 'Specification 2',
     guarantee: {
       start: '2017-06-29 12:09:33',
       end: '2017-06-29 12:09:33'
@@ -71,7 +71,12 @@ webServer.on('connection', (ws) => {
   ws.on('error', (e) => console.log(e));
 
   ws.on('message', (message) => {
-    if (message == 'products') {
+    const messageJSON = JSON.parse(message)
+    if (messageJSON == 'products') {
+      ws.send(JSON.stringify(products))
+    } else if(typeof messageJSON === 'object') {
+      const deleteIndex = products.findIndex((p) => p.id == messageJSON.id)
+      products.splice(deleteIndex, 1)
       ws.send(JSON.stringify(products))
     } else {
       ws.send(JSON.stringify(orders))

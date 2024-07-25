@@ -25,7 +25,7 @@
         <div class="modal__control">
           <div class="btns">
             <button @click="$emit('close')">Cancel</button>
-            <button>Delete</button>
+            <button @click="deleteProduct">Delete</button>
           </div>
         </div>
       </div>
@@ -41,6 +41,12 @@ export default {
       type: Object,
     },
   },
+  methods: {
+    deleteProduct() {
+      this.$store.dispatch('askForData', this.element);
+      this.$emit('close');
+    }
+  }
 };
 </script>
 
