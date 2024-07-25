@@ -1,0 +1,14 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "web socket server",
+  "main": "app.js",
+  "scripts": {
+    "test": "websocket"
+  },
+  "author": "Andreiev Artem",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
